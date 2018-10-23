@@ -1,0 +1,54 @@
+import org.reflections.Reflections;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+public class PredicateFactory {
+
+    private static PredicateFactory factory;
+
+    private static Map<String,NumberPredicate> predicateMap=new HashMap<String,NumberPredicate>();
+
+    private PredicateFactory() {
+        initPredicateList();
+    }
+
+    public static PredicateFactory getInstance() {
+        if (factory == null) {
+            factory = new PredicateFactory();
+        }
+        return factory;
+    }
+
+    public Map getPredicateMap(){
+        return  predicateMap;
+    }
+
+
+    public  void initPredicateList()  {
+
+        Set<Class<? extends NumberPredicate >> classes =  factory.getAllNumberPredicateClass();
+
+        for (Class predicate:classes) {
+            try {
+                predicateMap.put(predicate.getName(), (NumberPredicate) predicate.forName(predicate.getName()).newInstance());
+
+
+            }  catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private Set getAllNumberPredicateClass(){
+        Reflections reflections = new Reflections("");
+        //get all the class which implements the NumberPredicate
+        return reflections.getSubTypesOf(NumberPredicate .class);
+
+    }
+
+
+
+}
