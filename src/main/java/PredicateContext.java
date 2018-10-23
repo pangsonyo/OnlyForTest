@@ -1,6 +1,7 @@
 import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Set;
 
 public class PredicateContext {
@@ -28,35 +29,40 @@ public class PredicateContext {
 
     }
 
-    public void NumberPredicateTest(Integer i)  throws Exception{
-        PredicateContext predicateContext = new PredicateContext();
-        Set<Class<? extends NumberPredicate >> classes = predicateContext.getAllNumberPredicateClass();
-        for(Class clazz : classes) {
+    public static void NumberPredicateTest(Integer i,NumberPredicate n)  throws Exception{
+//        PredicateContext predicateContext = new PredicateContext();
+//        Set<Class<? extends NumberPredicate >> classes = predicateContext.getAllNumberPredicateClass();
+       // for(Class clazz : predicateMap.v) {
             //System.out.println("Found: " + clazz.getName());
-            Method rule = clazz.getMethod("rule", Integer.class);
-            Method behavior = clazz.getMethod("behavior");
+            Method rule = n.getClass().getMethod("rule", Integer.class);
+            Method behavior = n.getClass().getMethod("behavior");
 
-            Boolean b = (Boolean)rule.invoke(clazz.forName(clazz.getName()).newInstance(), i);
+            Boolean b = (Boolean)rule.invoke(n, i);
             if(!b){
-                continue;
+                //continue;
             }else {
-               String a = (String)behavior.invoke(clazz.forName(clazz.getName()).newInstance());
+               String a = (String)behavior.invoke(n);
 
                //deal with the bussiness
                System.out.println(a);
             }
 
-        }
+        //}
 
     }
 
-    public static void main(String[] args) {
-        PredicateContext predicateContext = new PredicateContext();
-        try {
-            predicateContext.NumberPredicateTest(13);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void main(String[] args) throws Exception {
+
+        PredicateFactory factory = PredicateFactory.getInstance();
+        Map<String,NumberPredicate> predicateMap = factory.getPredicateMap();
+
+        for (int i=1 ;i<=100;i++){
+            for (String s:predicateMap.keySet()) {
+                PredicateContext.NumberPredicateTest(i, predicateMap.get(s));
+            }
+
         }
+
     }
 
 }
