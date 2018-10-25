@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <Rules>
+    <rule expression="i%3==0&amp;&amp;i%5==0" BehaviorClass="com.impl.FizzBuzzPredicate">
+    </rule>
+
     <rule expression="i%3==0" BehaviorClass="com.impl.BuzzPredicate">
-        <property name="isUse" value="true"/>
-        <property name="isDefault" value="false"/>
-        <property name="order" value="1"/>
     </rule>
 
     <rule expression="i%5==0" BehaviorClass="com.impl.FizzPredicate">
-        <property name="isUse" value="true"/>
-        <property name="isDefault" value="false"/>
-        <property name="order" value="1"/>
     </rule>
 
-    <Bean id="BuzzPredicate" BehaviorClass="com.impl.BuzzPredicate" >
-        <property name="isUse" value="true"/>
-        <property name="isDefault" value="false"/>
-        <property name="order" value="1"/>
-    </Bean>
-
+    <!--the default behavior    make the expression always true-->
+    <rule expression="1==1" BehaviorClass="com.impl.NonePredicate">
+    </rule>
 </Rules>
+    <!--it can make the xml like spring later  even can control the order of the rule  and if the rule is needed-->
+    <!--<Bean id="BuzzPredicate" BehaviorClass="com.impl.BuzzPredicate" >-->
+        <!--<property name="isUse" value="true"/>-->
+        <!--<property name="isDefault" value="false"/>-->
+        <!--<property name="order" value="1"/>-->
+    <!--</Bean>-->
