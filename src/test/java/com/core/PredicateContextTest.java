@@ -6,8 +6,13 @@ import org.junit.Test;
 public class PredicateContextTest {
 
     @Test
-    public void numberPredicate() {
-        PredicateContext predicateContext = new PredicateContext();
-        predicateContext.NumberPredicate(100);
+    public void numberPredicate() throws Exception {
+       RulePraser rulePraser = new RulePraser("src\\main\\resources\\Bean.xml");
+       ActionDealer actionDealer = new ActionDealer(rulePraser);
+
+       for (int i=1; i<=100;i++){
+           actionDealer.behavior(i);
+       }
+
     }
 }
